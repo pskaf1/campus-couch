@@ -39,6 +39,11 @@ const config = {
   },
   allowed_origins: env('allowed origins', ['*']),
   bcrypt_salt_rounds: env('bcrypt salt rounds', 10),
+  auth: {
+    apple: {
+      client: env('apple client id', ''),
+    },
+  },
   jwt: {
     access_token: {
       secret: env('jwt access secret', genSecret()),
