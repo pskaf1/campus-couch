@@ -1,0 +1,73 @@
+2025-04-17T17:58:08.930Z [Campus Couch] info: [33mLoading environment variables from:[39m 
+2025-04-17T17:58:08.932Z [Campus Couch] info: [32mEnvironment variables loaded successfully[39m 
+2025-04-17T17:58:09.749Z [Campus Couch] info: [33mStarting server with configuration:[39m {
+  "port": 3002,
+  "ip_address": "127.0.0.1",
+  "href": "http://127.0.0.1:3001",
+  "name": "Campus Couch",
+  "env": "development"
+}
+2025-04-17T17:58:09.885Z [Campus Couch] warn: Could not kill port 3002, continuing anyway 
+2025-04-17T17:58:10.419Z [Campus Couch] info: [32m🚀 Database connected successfully[39m 
+2025-04-17T17:58:10.937Z [Campus Couch] info: [33m🚀 Campus Couch is running on http://127.0.0.1:3001[39m 
+2025-04-17T17:58:17.548Z [Campus Couch] info: [35m🔴 Shutting down server due to SIGTERM...[39m 
+2025-04-17T17:58:18.399Z [Campus Couch] info: [33mLoading environment variables from:[39m 
+2025-04-17T17:58:18.401Z [Campus Couch] info: [32mEnvironment variables loaded successfully[39m 
+2025-04-17T17:58:18.963Z [Campus Couch] info: [33mStarting server with configuration:[39m {
+  "port": 3002,
+  "ip_address": "127.0.0.1",
+  "href": "http://127.0.0.1:3001",
+  "name": "Campus Couch",
+  "env": "development"
+}
+2025-04-17T17:58:18.996Z [Campus Couch] warn: Could not kill port 3002, continuing anyway 
+2025-04-17T17:58:19.723Z [Campus Couch] info: [32m🚀 Database connected successfully[39m 
+2025-04-17T17:58:20.247Z [Campus Couch] info: [33m🚀 Campus Couch is running on http://127.0.0.1:3001[39m 
+2025-04-17T17:58:28.703Z [Campus Couch] info: [35m🔴 Shutting down server due to SIGTERM...[39m 
+2025-04-17T17:58:29.046Z [Campus Couch] info: [33mLoading environment variables from:[39m 
+2025-04-17T17:58:29.047Z [Campus Couch] info: [32mEnvironment variables loaded successfully[39m 
+2025-04-17T17:58:29.263Z [Campus Couch] info: [33mStarting server with configuration:[39m {
+  "port": 3002,
+  "ip_address": "127.0.0.1",
+  "href": "http://127.0.0.1:3001",
+  "name": "Campus Couch",
+  "env": "development"
+}
+2025-04-17T17:58:29.301Z [Campus Couch] warn: Could not kill port 3002, continuing anyway 
+2025-04-17T17:58:29.845Z [Campus Couch] info: [32m🚀 Database connected successfully[39m 
+2025-04-17T17:58:30.372Z [Campus Couch] info: [33m🚀 Campus Couch is running on http://127.0.0.1:3001[39m 
+2025-04-17T17:59:26.102Z [Campus Couch] info: [35m🔴 Shutting down server due to SIGTERM...[39m 
+2025-04-17T17:59:31.753Z [Campus Couch] info: [33mLoading environment variables from:[39m 
+2025-04-17T17:59:31.755Z [Campus Couch] info: [32mEnvironment variables loaded successfully[39m 
+2025-04-17T17:59:32.325Z [Campus Couch] info: [33mStarting server with configuration:[39m {
+  "port": 3002,
+  "ip_address": "127.0.0.1",
+  "href": "http://127.0.0.1:3001",
+  "name": "Campus Couch",
+  "env": "development"
+}
+2025-04-17T17:59:32.538Z [Campus Couch] warn: Could not kill port 3002, continuing anyway 
+2025-04-17T17:59:33.091Z [Campus Couch] info: [32m🚀 Database connected successfully[39m 
+2025-04-17T17:59:33.583Z [Campus Couch] info: [33m🚀 Campus Couch is running on http://127.0.0.1:3001[39m 
+2025-04-17T17:59:44.577Z [Campus Couch] info: [35m🔴 Shutting down server due to SIGTERM...[39m 
+2025-04-17T17:59:44.968Z [Campus Couch] info: [33mCurrent working directory:[39m 
+2025-04-17T17:59:44.969Z [Campus Couch] info: [33mLooking for .env file at:[39m 
+2025-04-17T17:59:44.970Z [Campus Couch] info: [32m.env file found[39m 
+2025-04-17T17:59:44.970Z [Campus Couch] info: [33m.env file contents:[39m 
+2025-04-17T17:59:44.971Z [Campus Couch] info: [32mEnvironment variables loaded successfully[39m 
+2025-04-17T17:59:44.971Z [Campus Couch] info: [33mProcess environment:[39m {
+  "PORT": "3002",
+  "HREF": "http://127.0.0.1:3001",
+  "IP_ADDRESS": "127.0.0.1"
+}
+2025-04-17T17:59:45.197Z [Campus Couch] info: [33mStarting server with configuration:[39m {
+  "port": 3002,
+  "ip_address": "127.0.0.1",
+  "href": "http://127.0.0.1:3001",
+  "name": "Campus Couch",
+  "env": "development"
+}
+2025-04-17T17:59:45.764Z [Campus Couch] warn: Could not kill port 3002, continuing anyway 
+2025-04-17T17:59:46.294Z [Campus Couch] info: [32m🚀 Database connected successfully[39m 
+2025-04-17T17:59:46.796Z [Campus Couch] info: [33m🚀 Campus Couch is running on http://127.0.0.1:3001[39m 
+2025-04-17T17:59:51.211Z [Campus Couch] info: [35m🔴 Shutting down server due to SIGTERM...[39m 

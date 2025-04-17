@@ -6,29 +6,24 @@ import config from '../../config';
 import { createLogger, format, transports } from 'winston';
 const { combine, timestamp, label, printf } = format;
 
-const myFormat = printf((info: any) => {
-  const { level, message, label, timestamp } = info;
-  const date = new Date(timestamp);
-  const hour = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-
-  return `${date.toDateString()} ${hour}:${minutes}:${seconds} [${label}] ${level}: ${message}`;
-});
-
-const logDir = path.resolve(process.cwd(), 'winston');
-const successLogDir = path.join(logDir, 'success');
+const logDir = 'logs';
 const errorLogDir = path.join(logDir, 'error');
+const successLogDir = path.join(logDir, 'success');
 
 createDir(successLogDir);
 createDir(errorLogDir);
+
+const myFormat = printf(({ level, message, label, timestamp, ...rest }) => {
+  const restString = Object.keys(rest).length ? JSON.stringify(rest, null, 2) : '';
+  return `${timestamp} [${label}] ${level}: ${message} ${restString}`;
+});
 
 /**
  * Logger for success messages
  */
 const logger = createLogger({
   level: 'info',
-  format: combine(label({ label: config.server.name }), timestamp(), myFormat),
+  format: combine(label({ label: 'Campus Couch' }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({
@@ -45,7 +40,7 @@ const logger = createLogger({
  */
 const errorLogger = createLogger({
   level: 'error',
-  format: combine(label({ label: config.server.name }), timestamp(), myFormat),
+  format: combine(label({ label: 'Campus Couch' }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({

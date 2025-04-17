@@ -20,6 +20,14 @@ const {
  */
 export default async function startServer() {
   try {
+    logger.info(colors.yellow('Starting server with configuration:'), {
+      port,
+      ip_address,
+      href,
+      name,
+      env: process.env.NODE_ENV
+    });
+
     try {
       await killPort(port);
     } catch (error) {
@@ -29,18 +37,28 @@ export default async function startServer() {
     await connectDB();
     await AdminServices.seed();
 
-    const server = createServer(app).listen(port, ip_address, () => {
-      logger.info(colors.yellow(`🚀 ${name} is running on ${href}`));
+    return new Promise((resolve, reject) => {
+      const server = createServer(app);
+      
+      server.on('error', (error: any) => {
+        if (error.code === 'EADDRINUSE') {
+          logger.error(`Port ${port} is already in use`);
+        }
+        reject(error);
+      });
+
+      server.listen(Number(port), '0.0.0.0', () => {
+        logger.info(colors.yellow(`🚀 ${name} is running on ${href}`));
+        resolve(server);
+      });
+
+      ['SIGTERM', 'SIGINT', 'unhandledRejection', 'uncaughtException'].forEach(
+        signal =>
+          process.on(signal, (err?: Error) => {
+            shutdownServer(server, signal, err);
+          }),
+      );
     });
-
-    ['SIGTERM', 'SIGINT', 'unhandledRejection', 'uncaughtException'].forEach(
-      signal =>
-        process.on(signal, (err?: Error) => {
-          shutdownServer(server, signal, err);
-        }),
-    );
-
-    return server;
   } catch (error) {
     errorLogger.error(colors.red('❌ Server startup failed!'), error);
     process.exit(1);
