@@ -4,8 +4,8 @@ import type ms from 'ms';
 import { genSecret } from '../util/crypto/genSecret';
 import getIpAddress from '../util/server/getIpAddress';
 
-const ip_address = env('ip address', getIpAddress());
-const port = Number(env('port', process.env.PORT || 3005));
+const ip_address = env('ip address', '127.0.0.1');
+const port = Number(env('port', 3005));
 const href = env('href', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `https://api.campuscouch.com`);
 const name = env('name', 'Campus Couch');
 const email = env('email user', 'admin@gmail.com');

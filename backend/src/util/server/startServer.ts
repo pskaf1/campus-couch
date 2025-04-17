@@ -28,8 +28,11 @@ export default async function startServer() {
       env: process.env.NODE_ENV
     });
 
+    // Kill any process using the port
     try {
       await killPort(port);
+      // Wait a bit to ensure the port is released
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       logger.warn(`Could not kill port ${port}, continuing anyway`);
     }
@@ -42,13 +45,16 @@ export default async function startServer() {
       
       server.on('error', (error: any) => {
         if (error.code === 'EADDRINUSE') {
-          logger.error(`Port ${port} is already in use`);
+          logger.error(`Port ${port} is already in use. Please check if another instance is running.`);
         }
         reject(error);
       });
 
-      server.listen(Number(port), '0.0.0.0', () => {
-        logger.info(colors.yellow(`🚀 ${name} is running on ${href}`));
+      // Use the configured IP address or fallback to localhost
+      const host = ip_address || '127.0.0.1';
+      
+      server.listen(Number(port), host, () => {
+        logger.info(colors.yellow(`🚀 ${name} is running on http://${host}:${port}`));
         resolve(server);
       });
 
