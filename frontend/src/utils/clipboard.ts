@@ -17,7 +17,7 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
         document.execCommand('copy');
         textArea.remove();
         return true;
-      } catch (err) {
+      } catch {
         textArea.remove();
         return false;
       }
