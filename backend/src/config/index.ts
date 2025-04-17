@@ -5,8 +5,8 @@ import { genSecret } from '../util/crypto/genSecret';
 import getIpAddress from '../util/server/getIpAddress';
 
 const ip_address = env('ip address', getIpAddress());
-const port = env('port', 3002);
-const href = env('href', `http://${ip_address}:${port}`);
+const port = env('port', process.env.PORT || 3002);
+const href = env('href', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://${ip_address}:${port}`);
 const name = env('name', 'Campus Couch');
 const email = env('email user', 'admin@gmail.com');
 
@@ -19,7 +19,7 @@ const email = env('email user', 'admin@gmail.com');
 const config = {
   server: {
     developer: env('developer', 'Shaishab Chandra Shil'),
-    node_env: env('node env', 'development'),
+    node_env: env('node env', process.env.NODE_ENV || 'development'),
     ip_address,
     port,
     href,
@@ -28,16 +28,13 @@ const config = {
     default_avatar: env('default avatar', '/images/placeholder.png'),
   },
   url: {
-    database: env(
-      'database url',
-      `mongodb://127.0.0.1:27017/${name.toLowerCase().replace(' ', '-')}`,
-    ),
+    database: env('database url', process.env.DATABASE_URL || `mongodb://127.0.0.1:27017/${name.toLowerCase().replace(' ', '-')}`),
     payment: {
       success: env('payment success url', `${href}/payment/success`),
       cancel: env('payment cancel url', `${href}/payment/cancel`),
     },
   },
-  allowed_origins: env('allowed origins', ['*']),
+  allowed_origins: env('allowed origins', ['https://campuscouch.com', 'https://www.campuscouch.com', 'http://localhost:3000']),
   bcrypt_salt_rounds: env('bcrypt salt rounds', 10),
   auth: {
     apple: {
@@ -46,7 +43,7 @@ const config = {
   },
   jwt: {
     access_token: {
-      secret: env('jwt access secret', genSecret()),
+      secret: env('jwt access secret', process.env.JWT_ACCESS_SECRET || genSecret()),
       expire_in: env<ms.StringValue>('jwt access expire in', '1d'),
     },
     refresh_token: {
