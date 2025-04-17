@@ -6,7 +6,7 @@ import getIpAddress from '../util/server/getIpAddress';
 
 const ip_address = env('ip address', getIpAddress());
 const port = Number(env('port', process.env.PORT || 3005));
-const href = env('href', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://${ip_address}:${port}`);
+const href = env('href', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `https://api.campuscouch.com`);
 const name = env('name', 'Campus Couch');
 const email = env('email user', 'admin@gmail.com');
 
@@ -19,7 +19,7 @@ const email = env('email user', 'admin@gmail.com');
 const config = {
   server: {
     developer: env('developer', 'Shaishab Chandra Shil'),
-    node_env: env('node env', process.env.NODE_ENV || 'development'),
+    node_env: env('node env', process.env.NODE_ENV || 'production'),
     ip_address,
     port,
     href,
@@ -34,7 +34,7 @@ const config = {
       cancel: env('payment cancel url', `${href}/payment/cancel`),
     },
   },
-  allowed_origins: env('allowed origins', ['https://campuscouch.com', 'https://www.campuscouch.com', 'http://localhost:3000']),
+  allowed_origins: env('allowed origins', ['https://campuscouch.com', 'https://www.campuscouch.com', 'http://localhost:3000', 'http://localhost:3001']),
   bcrypt_salt_rounds: env('bcrypt salt rounds', 10),
   auth: {
     apple: {
