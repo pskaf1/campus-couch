@@ -48,6 +48,16 @@ app.get('/', (_, res) => {
   });
 });
 
+app.get('/health', (_, res) => {
+  serveResponse(res, {
+    message: `${config.server.name} health check passed`,
+    data: {
+      status: 'healthy',
+      timestamp: new Date().toISOString()
+    }
+  });
+});
+
 // Add favicon route
 app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
