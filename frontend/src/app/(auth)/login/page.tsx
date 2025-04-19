@@ -1,27 +1,33 @@
 "use client";
 
-import { Eye } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 import { useLoginMutation } from "@/redux/features/auth/authAPI";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+interface FormData {
+  email: string;
+  password: string;
+}
+
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  });
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const [login] = useLoginMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await login({ email, password }).unwrap();
+      const response = await login(formData).unwrap();
       
       if (response.message === "Send Otp successfully! Check your email.") {
         setOtpSent(true);
@@ -43,13 +49,21 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await login({ email, password, otp }).unwrap();
+      const response = await login({ ...formData, otp }).unwrap();
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
       router.push("/");
     } catch (err: any) {
       setError(err.data?.message || "Invalid OTP. Please try again.");
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -80,8 +94,8 @@ export default function LoginPage() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -96,8 +110,8 @@ export default function LoginPage() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
               </div>
             </div>

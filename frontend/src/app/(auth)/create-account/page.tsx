@@ -6,10 +6,17 @@ import { useState } from "react";
 import { useSignupMutation } from "@/redux/features/auth/authAPI";
 import { useRouter } from "next/navigation";
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export default function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
