@@ -19,7 +19,7 @@ interface Product {
 
 const productAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<Product[], void>({ query: () => "/products" }),
+    getProducts: builder.query<Product[], void>({ query: () => "/api/v1/products" }),
   }),
 });
 
