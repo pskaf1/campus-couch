@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'campuscouch.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.campuscouch.com',
+        pathname: '/**',
       }
     ],
   },

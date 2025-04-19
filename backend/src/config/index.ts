@@ -34,7 +34,14 @@ const config = {
       cancel: env('payment cancel url', `${href}/payment/cancel`),
     },
   },
-  allowed_origins: env('allowed origins', ['https://campuscouch.com', 'https://www.campuscouch.com', 'http://localhost:3000', 'http://localhost:3001']),
+  allowed_origins: env('allowed origins', [
+    'https://campuscouch.com',
+    'https://www.campuscouch.com',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001'
+  ]),
   bcrypt_salt_rounds: env('bcrypt salt rounds', 10),
   auth: {
     apple: {
