@@ -1,14 +1,17 @@
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import express from 'express';
-import { StatusCodes } from 'http-status-codes';
-import globalErrorHandler from './app/middlewares/globalErrorHandler';
-import RoutesV1 from './routes/v1';
-import { Morgan } from './util/logger/morgen';
+import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import ServerError from './errors/ServerError';
-import serveResponse from './util/server/serveResponse';
-import config from './config';
-import path from 'path';
+import { errorLogger, logger } from './util/logger/logger';
+import { errorHandler } from './middleware/errorHandler';
+import { notFoundHandler } from './middleware/notFoundHandler';
+import { corsOptions } from './config/cors';
+import { morganConfig } from './config/morgan';
+import { config } from './config';
+import { logger as requestLogger } from './middleware/requestLogger';
+import { rateLimiter } from './middleware/rateLimiter';
+import { routes } from './app/routes';
+import { logger as responseLogger } from './middleware/responseLogger';
 
 /**
  * The main application instance
@@ -16,64 +19,77 @@ import path from 'path';
  * This is the main application instance that sets up the Express server.
  * It configures middleware, routes, and error handling.
  */
-const app = express();
+const app: Application = express();
 
-// Serve static files
-app.use(express.static('uploads'), express.static('public'));
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors(corsOptions));
+app.use(morgan(morganConfig.format, morganConfig.options));
+app.use(requestLogger);
+app.use(responseLogger);
+app.use(rateLimiter);
 
-// Configure middleware
-app.use(
-  cors({
-    origin: config.allowed_origins,
-    credentials: true,
-  }),
+// Log startup information
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.path === '/') {
+    logger.info('Root route accessed', {
+      method: req.method,
+      path: req.path,
+      query: req.query,
+      headers: req.headers
+    });
+  }
+  next();
+});
 
-  Morgan.successHandler,
-  Morgan.errorHandler,
-
-  (req, res, next) =>
-    (req.headers['stripe-signature']
-      ? express.raw({ type: 'application/json' })
-      : express.json())(req, res, next),
-
-  express.text(),
-  express.urlencoded({ extended: true }),
-  cookieParser(),
-);
-
-// Health check endpoint
-app.get('/', (_, res) => {
-  serveResponse(res, {
-    message: `${config.server.name} is running successfully. Please check the documentation for more details.`,
+// Root route handler
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    message: 'Welcome to Campus Couch API',
+    version: '1.0.0',
+    documentation: 'https://campus-couch-22y8-r2he89k38-patrick-skafs-projects.vercel.app/docs',
+    availableEndpoints: {
+      auth: '/api/v1/auth',
+      products: '/api/v1/products',
+      orders: '/api/v1/orders',
+      cart: '/api/v1/cart',
+      wishlist: '/api/v1/wishlist',
+      trades: '/api/v1/trades',
+      bundles: '/api/v1/bundles',
+      reviews: '/api/v1/reviews',
+      payment: '/api/v1/payment'
+    },
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
   });
 });
 
-app.get('/health', (_, res) => {
-  serveResponse(res, {
-    message: `${config.server.name} health check passed`,
-    data: {
-      status: 'healthy',
-      timestamp: new Date().toISOString()
-    }
+// Test route - always responds
+app.get('/test', (_, res) => {
+  logger.info('Test route accessed');
+  res.json({ 
+    message: 'Test route is working',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    nodeVersion: process.version
   });
-});
-
-// Add favicon route
-app.get('/favicon.ico', (req, res) => {
-  res.status(204).end();
 });
 
 // API routes
-app.use('/api/v1', RoutesV1);
+app.use('/api/v1', routes);
 
-// 404 handler
-app.use(({ originalUrl }, _, next) => {
-  next(
-    new ServerError(StatusCodes.NOT_FOUND, `Route not found. ${originalUrl}`),
-  );
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// Log all routes
+app._router.stack.forEach((r: any) => {
+  if (r.route && r.route.path) {
+    logger.info(`Route registered: ${r.route.path}`);
+  }
 });
 
-// Error handler
-app.use(globalErrorHandler);
-
+// Export the Express API
 export default app;
