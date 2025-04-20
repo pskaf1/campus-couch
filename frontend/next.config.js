@@ -26,7 +26,19 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true
-  }
+  },
+  // Enable static exports
+  trailingSlash: true,
+  // Ensure proper routing in production
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/coming-soon',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig; 
